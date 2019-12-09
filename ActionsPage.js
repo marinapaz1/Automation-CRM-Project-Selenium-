@@ -1,3 +1,4 @@
+const logger = require('./logger')
 class ActionsPage {
     constructor(selenium) {
         this.selenium = selenium
@@ -11,15 +12,15 @@ class ActionsPage {
     //Validate the pop up that indicates success or error matches the operation 
     async _validatePopUp() {
         try {
-            let popUp = await this.selenium.getTextFromElement("xpath", '//*[@id="root"]/div/div[4]/div[4]')
+            let popUp = await this.selenium.getTextFromElement("xpath", `//div[contains(@class,'pop-up')]/div`)
             if (popUp === "SOME DETAILS ARE MISSING") {
-                console.log(`${popUp}`)
+                logger.info(`${popUp}`)
             }
             else if (popUp === "UPDATE SUCCESSFUL") {
-                console.log(`${popUp}`)
+                logger.info(`${popUp}`)
             }
         } catch (error) {
-            console.log(`Couldn't get the pop-up: ${error}`)
+            logger.error(`Couldn't get the pop-up: ${error}`)
         }
     }
 
@@ -35,6 +36,7 @@ class ActionsPage {
             await this._validatePopUp()
         } catch (error) {
             console.log(`Couldn't add a new client: ${error}`)
+            logger.error(`Couldn't add a new client: ${error}`)
         }
     }
 
@@ -43,33 +45,37 @@ class ActionsPage {
         try {
             // insert client's name
             await this.selenium.write(client, "css", "input[list='names']")           
-            await this.selenium.driver.sleep(2000)
+            await this.selenium.driver.sleep(1000)
 
             // update client's owner 
             if (newOwner) {
                 console.log(`Going to update the owner`)
+                logger.info(`Going to update the owner`)
                 await this.selenium.write(newOwner, "css", "input[list='owner']")     // insert owner's name
-                await this.selenium.driver.sleep(4000)
+                await this.selenium.driver.sleep(1000)
                 await this.selenium.clickElement("css", "input[value='Transfer']")    // click on 'Transfer'
                 await this._validatePopUp()                                           // validate the pop up
             }
             // update client's email type
             if (changeEmailType) {
                 console.log(`Going to update the email type`)
+                logger.info(`Going to update the email type`)
                 await this.selenium.write(changeEmailType, "css", "input[list='emailType']")   // insert email type (any)
-                await this.selenium.driver.sleep(4000)
+                await this.selenium.driver.sleep(1000)
                 await this.selenium.clickElement("css", "input[value='Send']")                 // click on 'Send'
                 await this._validatePopUp()                                                    // validate the pop up
             }
             //update decleare as 'Sold'
             if (sold) {
                 console.log(`Going to declear as Sold`)
+                logger.info(`Going to declear as Sold`)
                 await this.selenium.driver.sleep(1000)
                 await this.selenium.clickElement("css", "input[value='Sold']")                // click on 'Sold'   
                 await this._validatePopUp()                                                   // validate the pop up
             }
-        } catch (error) {
-            console.error(`Couldn't update the client ${client}: ${error}`)
+        } catch(error) {
+            console.log(`Couldn't update the client ${client}: ${error}`)
+            logger.error(`Couldn't update the client ${client}: ${error}`)
         }
     }
 }

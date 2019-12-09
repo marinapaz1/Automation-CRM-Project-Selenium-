@@ -3,6 +3,7 @@ const HomePage = require("./HomePage")
 const AnalyticsPage = require("./AnalyticsPage")
 const ClientsPage = require("./ClientsPage")
 const ActionsPage = require("./ActionsPage")
+const logger = require('./logger')
 
 class TestAnalytics {
     constructor() {
@@ -13,26 +14,30 @@ class TestAnalytics {
         this.actionsPage = new ActionsPage(this.testSelenium)
     }
 
-    async employeeSales(countrySales, firstName, lastName, country, owner, email, client, newOwner = null, changeEmailType = null, sold) {
-        console.log(`Check for number of sales of Janice Alvarado in ${countrySales}, change the sales number by adding a client in Greece\nfor Janice Alvarado and update it to declare as sold, then validate the number of sales increased by 1`)
+    async employeeSales(countrySales, employeeName, firstName, lastName, country, owner, email, client, newOwner = null, changeEmailType = null, sold) {
+        console.log(`Check for number of sales of the employee ${employeeName} in ${countrySales}, change the sales number by adding a client in ${countrySales}\nfor ${employeeName} and update it to declare as sold, then validate the number of sales increased by 1`)
+        logger.info(`Check for number of sales of the employee ${employeeName} in ${countrySales}, change the sales number by adding a client in ${countrySales}\nfor ${employeeName} and update it to declare as sold, then validate the number of sales increased by 1`)
         await this.homePage.navigateToHomePage()
         await this.homePage.clickOnAnalytics()
-        let salesBefore = await this.analyticsPage.validateEmployeeSales(countrySales)
+        let salesBefore = await this.analyticsPage.validateEmployeeSales(countrySales, employeeName)
         await this.actionsPage.navigateToActionsPage()
         await this.actionsPage.addNewClient(firstName, lastName, country, owner, email)
         await this.actionsPage.updateClient(client, newOwner, changeEmailType, sold)
         await this.analyticsPage.navigateToAnalyticsPage()
-        let salesAfter = await this.analyticsPage.validateEmployeeSales(countrySales)
+        let salesAfter = await this.analyticsPage.validateEmployeeSales(countrySales, employeeName)
         if (salesAfter == (salesBefore + 1)) {
-            console.log(`VALIDATION SECCEEDED: THE 'EMPLOYEE SALES' NUMBER OF JANICE ALVARADO IN ${countrySales} INCREASED BY 1`)
+            console.log(`Validation SECCEEDED: The 'Employee Sales' number of ${employeeName} in ${countrySales} increased by 1`)
+            logger.info(`Validation SECCEEDED: The 'Employee Sales' number of ${employeeName} in ${countrySales} increased by 1`)
         }
         else {
-            console.log(`VALIDATION FAILED: THE 'EMPLOYEE SALES' NUMBER OF JANICE ALVARADO IN ${countrySales} DIDNT'T INCREASE BY 1. Make sure to verify 3 Pre-Requisites:\nClient's country is ${countrySales};\nClient's owner is Janice Alvarado;\nClient's 'Sold' is 'NO'`)
+            console.log(`Validation FAILED: The 'Employee Sales' number of ${employeeName} in ${countrySales} didn't increase by 1. Make sure to verify 3 Pre-Requisites:\nClient's country is ${countrySales};\nClient's owner is Janice Alvarado;\nClient's 'Sold' is 'NO'`)
+            logger.info(`Validation FAILED: The 'Employee Sales' number of ${employeeName} in ${countrySales} didn't increase by  1. Make sure to verify 3 Pre-Requisites:\nClient's country is ${countrySales};\nClient's owner is Janice Alvarado;\nClient's 'Sold' is 'NO'`)
         }
     }
 
     async emailsSent(searchBy, input, type, deleteClient, updateClient = null, country = null, email = null) {
         console.log(`Check for number of Email Sent, delete a client that has an email type, and validate the number of Email Sent decreased by 1`)
+        logger.info(`Check for number of Email Sent, delete a client that has an email type, and validate the number of Email Sent decreased by 1`)
         await this.homePage.navigateToHomePage()
         await this.homePage.clickOnAnalytics()
         let emailsSentBefore = await this.analyticsPage.validateEmailsSent()
@@ -42,15 +47,19 @@ class TestAnalytics {
         await this.analyticsPage.navigateToAnalyticsPage()
         let emailsSentAfter = await this.analyticsPage.validateEmailsSent()
         if (emailsSentAfter == (emailsSentBefore - 1)) {
-            console.log(`VALIDATION SECCEEDED: THE 'EMAILS SENT' NUMBER DECREASED BY 1`)
+            console.log(`Validation SECCEEDED: The 'Email Sent' number decreased by 1`)
+            logger.info(`Validation SECCEEDED: The 'Email Sent' number decreased by 1`)
         }
         else {
-            console.log(`VALIDATION FAILED: THE 'EMAILS SENT' NUMBER DIDN'T DECREASED BY 1. Make sure to verify Pre-Requisite: Existing client's email type`)
+            console.log(`Validation FAILED: The 'Email Sent' number didn't decreased by 1. Make sure to verify Pre-Requisite: Existing client's email type`)
+            logger.info(`Validation FAILED: THE 'Email Sent' number didn't decreased by 1. Make sure to verify Pre-Requisite: Existing client's email type`)
         }
     }
 
     async topEmployee(topEmployee, firstName, lastName, country, owner, email, client, newOwner = null, changeEmailType = null, sold) {
         console.log(`Check for number of sales on Top Employee, add a client to that employee, update that client and declare as 'Sold',
+        and validate the number of sales increased by 1`)
+        logger.info(`Check for number of sales on Top Employee, add a client to that employee, update that client and declare as 'Sold',
         and validate the number of sales increased by 1`)
         await this.homePage.navigateToHomePage()
         await this.homePage.clickOnAnalytics()
@@ -61,10 +70,12 @@ class TestAnalytics {
         await this.analyticsPage.navigateToAnalyticsPage()
         let salesAfter = await this.analyticsPage.validateTopEmployee(topEmployee)
         if (salesAfter === (salesBefore + 1)) {
-            console.log(`VALIDATION SECCEEDED: THE NUMBER OF SALES ON TOP EMPLOYEE OF ${topEmployee} INCREASED BY 1`)
+            console.log(`Validation SECCEEDED: The number of sales on top employee of ${topEmployee} increased by 1`)
+            logger.info(`Validation SECCEEDED: The number of sales on top employee of ${topEmployee} increased by 1`)
         }
         else {
-            console.log(`VALIDATION FAILED: THE NUMBER OF SALES ON TOP EMPLOYEE OF ${topEmployee} DIDN'T INCREASE BY 1. Make sure you add the client with the correct employee / the client has 'NO' in 'Sold'`)
+            console.log(`Validation FAILED: The number of sales on top employee of ${topEmployee} didn't increase by 1. Make sure you add the client with the correct employee / the client has 'NO' in 'Sold'`)
+            logger.info(`Validation FAILED: The number of sales on top employee of ${topEmployee} didn't increase by 1. Make sure you add the client with the correct employee / the client has 'NO' in 'Sold'`)
         }
     }
 }
@@ -73,7 +84,7 @@ const testAnalytics = new TestAnalytics()
 
 async function test() {
     //1 //validate number of employees sales in Greece, update Janice Alvarado's client's 'Sold' to YES, and validate number changed
-    await testAnalytics.employeeSales('Greece', 'Jasmin', 'BurgerKing', 'Greece', 'Janice Alvarado', 'Jasmin@TheGreat.com', 'Jasmin BurgerKing', null, null, 'sold')
+    await testAnalytics.employeeSales('Greece', 'Janice', 'Jasmin', 'BurgerKing', 'Greece', 'Janice Alvarado', 'Jasmin@TheGreat.com', 'Jasmin BurgerKing', null, null, 'sold')
 
 
     //2 //validate number of Email Sent, delete a client that has an email type and validate the number of Email Sent changed
@@ -81,15 +92,15 @@ async function test() {
 
     /*3 //check for number of sales on Top Employee, add a client to that employee, update client and declare as 'Sold',
         and validate the number of sales */
-    let topEmployee = ["Janice Alvarado", "Barton Ramirez", "Martin Massey"]
-    //Check Janice
+    let topEmployee = ["Janice Alvarado", "Martin Massey", "Emily Durham"]
+    // //Check Janice
     await testAnalytics.topEmployee(topEmployee[0], 'David', 'King', 'Croatia', 'Janice Alvarado', 'David@TheMighty.com', 'David King', null, null, 'sold')
 
-    //Check Barton
-    await testAnalytics.topEmployee(topEmployee[1], 'Nancy', 'Lewise', 'Croatia', 'Barton Ramirez', 'NancyL@TheMighty.com', 'Nancy Lewise', null, null, 'sold')
+    // //Check Barton
+    await testAnalytics.topEmployee(topEmployee[1], 'Nancy', 'Lewise', 'Croatia', 'Martin Massey', 'NancyL@TheMighty.com', 'Nancy Lewise', null, null, 'sold')
 
-    //Check Martin
-    await testAnalytics.topEmployee(topEmployee[2], 'Marika', 'Jonson', 'Croatia', 'Martin Massey', 'MarikaJ@TheMighty.com', 'Marika Jonson', null, null, 'sold')
-    testAnalytics.homePage.close()
+    // //Check Martin
+    await testAnalytics.topEmployee(topEmployee[2], 'Marika', 'Jonhanson', 'Croatia', 'Emily Durham', 'MarikaJ@TheMighty.com', 'Marika Jonhanson', null, null, 'sold')
+    await testAnalytics.homePage.close()
 }
 test()

@@ -2,7 +2,7 @@ const SelenuimInfra = require("./SeleniumInfra")
 
 class BasePage {
     constructor(){
-        // gets the driver and all functionality of the seleniumInfra class
+        // gets the driver and all functionality of the seleniumInfra 
         this.selenium = new SelenuimInfra()
     }
 }

@@ -1,3 +1,5 @@
+const logger = require('./logger')
+
 flag = true
 
 class ClientsPage {
@@ -7,15 +9,19 @@ class ClientsPage {
     //Validate the pop up that indicates success or error matches the operation 
     async _validatePopUp() {
         try {
-            let popUp = await this.selenuim.getTextFromElement("xpath", '//*[@id="root"]/div/div[4]/div[5]')
-            if (popUp === "SOME DETAILS ARE MISSING") {
-                console.log(`${popUp}`)
+            let successPopUp = await this.selenium.getTextFromElement("xpath", `//div[@class='success-pop-up']`)
+            let errorPopUp = await this.selenium.getTextFromElement("xpath", `//div[@class='error-pop-up']`)
+            if (successPopUp === 'UPDATE SUCCESSFUL') {
+                console.log(`${successPopUp}`)
+                logger.info(`${successPopUp}`)
             }
-            if (popUp === "UPDATE SUCCESSFUL") {
-                console.log(`${popUp}`)
+            if (errorPopUp === 'SOME DETAILS ARE MISSING') {
+                console.log(`${errorPopUp}`)
+                logger.info(`${errorPopUp}`)
             }
         } catch (error) {
             console.log(`Couldn\'t get the pop-up: ${error}`)
+            logger.error(`Couldn\'t get the pop-up: ${error}`)
         }
     }
 
@@ -40,6 +46,7 @@ class ClientsPage {
             let isExists = await this.selenium.isElementExists("css", 'tr.clientDetails th:nth-child(1)')       // check if the first client exists
             if (!isExists) {
                 console.log(`The ${searchBy} is not found`)
+                logger.info(`The ${searchBy} is not found`)
             }
 
             // if there are one or more results- get all data about client(s) with the searched parameter (within all pages)                                    
@@ -133,13 +140,16 @@ class ClientsPage {
             // Validate the searched value is the same for all clients that were found
             if (flag = true) {
                  console.log(`THE ${searchBy} IS THE SAME FOR ALL CLIENTS`)
+                 logger.info(`THE ${searchBy} IS THE SAME FOR ALL CLIENTS`)
             }
             else {
                 console.log(`THE ${searchBy} IS NOT THE SAME FOR ALL CLIENTS`)
+                logger.info(`THE ${searchBy} IS NOT THE SAME FOR ALL CLIENTS`)
             }
             }
         } catch (error) {
             console.log(`Couldn't search a client: ${error}`)
+            logger.error(`Couldn't search a client: ${error}`)
         }
         await this.selenium.driver.sleep(2000)
     }
@@ -147,45 +157,46 @@ class ClientsPage {
     //2 //Delete or update a client and validate it has been deleted/ updated occordingly
     async deleteOrUpdateClient(deleteClient, updateClient, country, email) {
         try {
-            await this.selenium.clickElement("xpath", '//*[@id="root"]/div/div[4]/table/tr[2]/th[4]')           // click on the first client
+            await this.selenium.clickElement("xpath", `//tr[@class='clientDetails']`)     // click on the first client
             if (deleteClient === "delete") {
                 console.log('Going to DELETE a client')
+                logger.info('Going to DELETE a client')
                 await this.selenium.clickElement("css", "input[value='Delete Client']")                     // click on delete button
                 await this._validatePopUp()                                                                  // Validate the pop up (should be: UPDATE SUCCESSFUL)
                 //Validate the client was deleted
-                let isExists = await this.selenium.isElementExists("xpath", '//*[@id="root"]/div/div[4]/table/tr[2]/th[4]')    // check if the client is exists
+                let isExists = await this.selenium.isElementExists("xpath", `//tr[@class='clientDetails']`) // check if the client is exists
                 if (!isExists) {
                     console.log('Client was deleted successfully')
+                    logger.info('Client was deleted successfully')
                 }
                 else {
                     console.log('Client wasn\'t deleted / there are more than one client')
+                    logger.info('Client wasn\'t deleted / there are more than one client')
                 }
-                return
             }
             if (updateClient === "update") {
                 if (country) {
                     console.log('Going to update the client\'s COUNTRY')
+                    logger.info('Going to update the client\'s COUNTRY')
                     await this.selenium.clearElementField("css", 'input[id="country"]')                        // clear the country field
                     await this.selenium.write(country, "id", "country")                                        // insert a new country
-                    await this.selenium.clickElement("css", "input[value ='Update Client']")                   // click on update client
-                    await this._validatePopUp()                                                                     // Validate the pop up (should be: UPDATE SUCCESSFUL)
-                    await this.selenium.driver.sleep(1000)
-                    await this.selenium.clearElementField("xpath", "//input[@type='text']")                    // Validate the pop up (should be: UPDATE SUCCESSFUL)
+                    // await this.selenium.clearElementField("xpath", "//input[@type='text']")                   
                 }
                 if (email) {
                     console.log('Going to update the client\'s EMAIL')
+                    logger.info('Going to update the client\'s EMAIL')
                     await this.selenium.clearElementField("css", "input[id='email']")                          // clear the email field
                     await this.selenium.write(email, "css", "input[id='email']")                               // insert a new email
-                    await this.selenium.clickElement("css", "input[value ='Update Client']")                   // click on update client
-                    await this._validatePopUp()                                                                     // Validate the pop up (should be: UPDATE SUCCESSFUL)
-                    await this.selenium.driver.sleep(1000)
-                    await this.selenium.clearElementField("xpath", "//input[@type='text']")
                 }
+                await this.selenium.clickElement("css", "input[value ='Update Client']")                   // click on update client
+                await this._validatePopUp()                                                               // Validate the pop up (should be: UPDATE SUCCESSFUL)
+                await this.selenium.driver.sleep(1000)
             }
-        } catch (error) {
+        } catch(error) {
             console.log(`Couldn't delete or update a client: ${error}`)
+            logger.error(`Couldn't delete or update a client: ${error}`)
         }
-        await this.selenium.driver.sleep(3000)
+        await this.selenium.driver.sleep(2000)
     }
 }
 

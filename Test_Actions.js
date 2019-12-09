@@ -2,6 +2,7 @@ const BasePage = require("./BasePage")
 const HomePage = require("./HomePage")
 const ActionsPage = require("./ActionsPage")
 const ClientsPage = require("./ClientsPage")
+const logger = require('./logger')
 
 class TestActions {
     constructor() {
@@ -14,22 +15,26 @@ class TestActions {
     //Add a new client, check the pop up is successful and validate client exists 
     async addNewClientAndValidate(firstName, lastName, country, owner, email, searchBy, input, type) {
         console.log("Test: Going to add a new client, check if pop-up indicates success and validate that the client was actually added")
+        logger.info(`Test: Going to add a new client, check if pop-up indicates success and validate that the client was actually added`)
         await this.homePage.navigateToHomePage()
         await this.homePage.clickOnActions()
         await this.actionsPage.addNewClient(firstName, lastName, country, owner, email)
         await this.clientsPage.navigateToClientsPage()
         let name = await this.clientsPage.searchByAndValidate(searchBy, input, type)
         if (input === name) {
-            console.log(`THE CLIENT ${input} WAS ADDED SUCCESSFULY. The ${input} is: ${name} `)
+            console.log(`The client ${input} was updated SUCCESSFULY. The ${input} is: ${name}`)
+            logger.info(`The client ${input} was updated SUCCESSFULY. The ${input} is: ${name}`)
         }
         else {
-            console.log(`FAILED TO ADD THE CLIENT: ${name}`)
+            console.log(`FAILED to add the client: ${name}`)
+            logger.info(`FAILED to add the client: ${name}`)
         }
     }
 
     // Add new client and validate the pop up is accordingly to the operation (successfull or missing data)
     async addNewClient(firstName = null, lastName = null, country = null, owner = null, email = null) {
         console.log("Test: Going to add a new client and validate the pop up accordingly to the operation")
+        logger.info("Test: Going to add a new client and validate the pop up accordingly to the operation")
         await this.homePage.navigateToHomePage()
         await this.homePage.clickOnActions()
         await this.actionsPage.addNewClient(firstName, lastName, country, owner, email)
@@ -38,6 +43,7 @@ class TestActions {
     // Update client: new owner, or email type, or declare as 'Sold' and validate the update was made
     async updateClient(searchBy, input, type, client, newOwner = null, changeEmailType = null, sold = null) {
         console.log("Test: Going to update a new owner, or email type, or declare as 'Sold' and validate the update was made")
+        logger.info("Test: Going to update a new owner, or email type, or declare as 'Sold' and validate the update was made")
         await this.homePage.navigateToHomePage()
         await this.homePage.clickOnClients()
         let typeBefore = await this.clientsPage.searchByAndValidate(searchBy, input, type)
@@ -46,10 +52,12 @@ class TestActions {
         await this.clientsPage.navigateToClientsPage()
         let typeAfter = await this.clientsPage.searchByAndValidate(searchBy, input, type)
         if (typeBefore !== typeAfter) {
-            console.log(`THE ${type} WAS UPDATED. IT WAS: ${typeBefore} AND AFTER THE UPDATE IT IS: ${typeAfter}`)
+            console.log(`The ${type} was updates SUCCESSFULY. It was: ${typeBefore} and after the update it is: ${typeAfter}`)
+            logger.info(`THE ${type} was updated SUCCESSFULY. IT WAS: ${typeBefore} and after the update it is: ${typeAfter}`)
         }
         else {
-            console.log(`The ${type} WASN'T UPDATED. IT WAS: ${typeBefore} AND AFTER THE UPDATE IT IS: ${typeAfter}  `)
+            console.log(`FAILED to update the ${type}. It was: ${typeBefore} and after the update it is: ${typeAfter}`)
+            logger.info(`FAILED to update the ${type}. It was: ${typeBefore} and after the update it is: ${typeAfter}`)
         }
     }
 }
@@ -67,7 +75,7 @@ await testActions.addNewClient("Alexander", "Berington", "Croatia")
 await testActions.updateClient('Name', 'Josh Burger', 'Owner', 'Josh Burger', 'Barton Ramirez', null, null)     // update the owner
 await testActions.updateClient('Name', 'Josh Burger', 'Email Type', 'Josh Burger', null, 'B', null)                  // update the email type
 await testActions.updateClient('Name', 'Josh Burger', 'Sold', 'Josh Burger', null, null, 'sold')               // update declare as sold 
-testActions.homePage.close()
+await testActions.homePage.close()
 }
 test()
 

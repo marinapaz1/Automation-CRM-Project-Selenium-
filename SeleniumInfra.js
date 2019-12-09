@@ -1,5 +1,6 @@
 
 const {Builder, By, Key , until} = require('selenium-webdriver');
+const logger = require("./logger")
 const path = require('chromedriver').path;
 const chrome = require('selenium-webdriver/chrome');
 let service = new chrome.ServiceBuilder(path).build();
@@ -13,7 +14,7 @@ class SelenuimInfra{
     async getURL(URL){ // Open browser
         await this.driver.get(URL)
         await this.driver.manage().window().maximize()
-    }
+    }   
 
     async close(){ // Close browser
         setTimeout(()=>{
@@ -47,6 +48,7 @@ class SelenuimInfra{
         }
         catch (error) {
             console.error(`Got error while trying to click on element with ${locatorType} = ${locatorValue} + ${error}`)
+            logger.debug(`Got error while trying to click on element with ${locatorType} = ${locatorValue} + ${error}`)
         }
     }
 
@@ -66,6 +68,7 @@ class SelenuimInfra{
         }
         catch (error) {
             console.error(`Got error while trying to send keys to element with ${locatorType} = ${locatorValue}`)
+            logger.debug(`Got error while trying to send keys to element with ${locatorType} = ${locatorValue}`)
         }
     }
 
@@ -84,6 +87,7 @@ class SelenuimInfra{
         }
         catch (error) {
             console.error(`Got error while trying to get text from element with ${locatorType} = ${locatorValue}`)
+            logger.debug(`Got error while trying to get text from element with ${locatorType} = ${locatorValue}`)
             return ""
         }
     }
@@ -103,6 +107,7 @@ class SelenuimInfra{
         }
         catch (error) {
             console.error(`Got error while trying to Clear text from element with ${locatorType} = ${locatorValue}`)
+            logger.debug(`Got error while trying to Clear text from element with ${locatorType} = ${locatorValue}`)
         }
     }
 
@@ -120,6 +125,7 @@ async isElementExists(locatorType , locatorValue, element , fromElement){
         }
     }
     catch{
+        logger.debug(`Couldn't determine if element is exist + ${error}`)
         return false
     }
 }
@@ -139,6 +145,7 @@ async isElementExists(locatorType , locatorValue, element , fromElement){
         }
         catch{
             console.error(`Got error while trying to find element with ${locatorType} = ${locatorValue}`)
+            logger.debug(`Got error while trying to find element with ${locatorType} = ${locatorValue}`)
         }
 
     }
@@ -157,6 +164,7 @@ async isElementExists(locatorType , locatorValue, element , fromElement){
         }
         catch{
             console.error(`Got error while trying to find element with ${locatorType} = ${locatorValue}`)
+            logger.debug(`Got error while trying to find element with ${locatorType} = ${locatorValue}`)
         }
 
     }
