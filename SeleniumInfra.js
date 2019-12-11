@@ -23,11 +23,11 @@ class SelenuimInfra{
     }
 
     async validURL(pageName){ // Compare convert and wanted URL
-        if(await this.driver.wait(until.urlContains(pageName), 1000)){
-            console.log("This Is The Right URL")
+        if(await this.driver.wait(until.urlContains(pageName), 2000)){
+            console.log('This Is The Right URL')
         }
         else{
-            console.log("This Is Wrong URL")
+            console.log('This Is Wrong URL')
         }
     }
 

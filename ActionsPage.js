@@ -1,7 +1,8 @@
 const logger = require('./logger')
+
 class ActionsPage {
     constructor(selenium) {
-        this.selenium = selenium
+        this.selenium = selenium;
     }
 
     async navigateToActionsPage() {
@@ -12,15 +13,18 @@ class ActionsPage {
     //Validate the pop up that indicates success or error matches the operation 
     async _validatePopUp() {
         try {
-            let popUp = await this.selenium.getTextFromElement("xpath", `//div[contains(@class,'pop-up')]/div`)
-            if (popUp === "SOME DETAILS ARE MISSING") {
+            let popUp = await this.selenium.getTextFromElement("xpath", `//div[contains(@class,'pop-up')]`)
+            if (popUp === 'UPDATE SUCCESSFUL') {
+                console.log(`${popUp}`)
                 logger.info(`${popUp}`)
             }
-            else if (popUp === "UPDATE SUCCESSFUL") {
+            else{
+                console.log(`${popUp}`)
                 logger.info(`${popUp}`)
             }
         } catch (error) {
-            logger.error(`Couldn't get the pop-up: ${error}`)
+            console.log(`Couldn\'t get the pop-up: ${error}`)
+            logger.error(`Couldn\'t get the pop-up: ${error}`)
         }
     }
 

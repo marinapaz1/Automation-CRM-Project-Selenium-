@@ -9,15 +9,14 @@ class ClientsPage {
     //Validate the pop up that indicates success or error matches the operation 
     async _validatePopUp() {
         try {
-            let successPopUp = await this.selenium.getTextFromElement("xpath", `//div[@class='success-pop-up']`)
-            let errorPopUp = await this.selenium.getTextFromElement("xpath", `//div[@class='error-pop-up']`)
-            if (successPopUp === 'UPDATE SUCCESSFUL') {
-                console.log(`${successPopUp}`)
-                logger.info(`${successPopUp}`)
+            let popUp = await this.selenium.getTextFromElement("xpath", `//*[@class='success-pop-up' or @class='error-pop-up']`)
+            if (popUp === 'UPDATE SUCCESSFUL') {
+                console.log(`${popUp}`)
+                logger.info(`${popUp}`)
             }
-            if (errorPopUp === 'SOME DETAILS ARE MISSING') {
-                console.log(`${errorPopUp}`)
-                logger.info(`${errorPopUp}`)
+            else{
+                console.log(`${popUp}`)
+                logger.info(`${popUp}`)
             }
         } catch (error) {
             console.log(`Couldn\'t get the pop-up: ${error}`)

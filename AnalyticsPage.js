@@ -68,21 +68,9 @@ class AnalyticsPage {
 
     //3 // Get the number of sales of Top Employee
     async validateTopEmployee(topEmployee) {
-        switch (topEmployee) {
-            case "Janice Alvarado":
-                await this.selenium.clickElement('css', `g.recharts-layer.recharts-bar g.recharts-layer.recharts-bar-rectangle:nth-child(1) path`)
-        break;
-            case "Martin Massey":
-                await this.selenium.clickElement("css", `g.recharts-layer.recharts-bar g.recharts-layer.recharts-bar-rectangle:nth-child(2) path`) 
-        break;
-            case "Emily Durham":
-                await this.selenium.clickElement("css", `g.recharts-layer.recharts-bar g.recharts-layer.recharts-bar-rectangle:nth-child(3) path`)
-        break;
-        default:
-            console.log(`Couldn't get the sales of ${topEmployee}`)
-            }
+        await this.selenium.clickElement('css', `g.recharts-layer.recharts-bar g.recharts-layer.recharts-bar-rectangle:nth-child(${topEmployee}) path`)
         let topEmployeeName = await this.selenium.getTextFromElement("css", "ul.recharts-tooltip-item-list li.recharts-tooltip-item")
-        await this.selenium.driver.sleep(2000)
+        await this.selenium.driver.sleep(1000)
         let int = await this._strToInt(topEmployeeName, topEmployee)
         return int   
     }

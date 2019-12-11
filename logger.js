@@ -7,6 +7,7 @@ const path = require('path');
     this.env = process.env.NODE_ENV || 'development';
     this.logDir = 'C:/BOOTCAMP/Automation_CRM_Project';
 
+
 // Create the log directory if it does not exist
 if (!fs.existsSync(this.logDir)) {
   fs.mkdirSync(this.logDir);
@@ -16,6 +17,7 @@ const dailyRotateFileTransport = new transports.DailyRotateFile({
   filename: `${this.logDir}/log/logs.log`,
   datePattern: 'YYYY-MM-DD'
 });
+
 this.logger = createLogger({
   // change level if in dev environment versus production
   level: this.env === 'development' ? 'verbose' : 'info',

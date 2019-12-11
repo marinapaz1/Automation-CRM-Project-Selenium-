@@ -1,0 +1,25 @@
+[Test_Actions.js]: 2019-12-11 20:37:47 - info: Test: Going to update a new owner, or email type, or declare as 'Sold' and validate the update was made
+[Test_Actions.js]: 2019-12-11 20:38:10 - info: Going to update the owner
+[Test_Actions.js]: 2019-12-11 20:38:18 - debug: Got error while trying to get text from element with xpath = //div[contains(@class,'pop-up')]/div
+[Test_Actions.js]: 2019-12-11 20:38:22 - info: FAILED to update the Owner. It was: Barton Ramirez and after the update it is: Barton Ramirez
+
+[Test_Analytics.js]: 2019-12-11 21:14:40 - info: Check for number of sales on Top Employee, add a client to that employee, update that client and declare as 'Sold',
+        and validate the number of sales increased by 1
+[Test_Analytics.js]: 2019-12-11 21:15:05 - info: 1: sales 81
+[Test_Analytics.js]: 2019-12-11 21:15:12 - info: UPDATE SUCCESSFUL
+[Test_Analytics.js]: 2019-12-11 21:15:14 - info: Going to declear as Sold
+[Test_Analytics.js]: 2019-12-11 21:15:21 - debug: Got error while trying to get text from element with xpath = //div[contains(@class,'pop-up')]/div
+[Test_Analytics.js]: 2019-12-11 21:15:31 - info: 1: sales 81
+[Test_Analytics.js]: 2019-12-11 21:15:32 - info: Validation FAILED: The number of sales on top employee of 1 didn't increase by 1. Make sure you add the client with the correct employee / the client has 'NO' in 'Sold'
+[Test_Analytics.js]: 2019-12-11 21:23:10 - info: Check for number of sales on Top Employee, add a client to that employee, update that client and declare as 'Sold',
+        and validate the number of sales increased by 1
+[Test_Analytics.js]: 2019-12-11 21:23:35 - info: 2: sales 64
+[Test_Analytics.js]: 2019-12-11 21:23:41 - info: UPDATE SUCCESSFUL
+[Test_Analytics.js]: 2019-12-11 21:23:42 - info: Going to declear as Sold
+[Test_Analytics.js]: 2019-12-11 21:23:49 - debug: Got error while trying to get text from element with xpath = //div[contains(@class,'pop-up')]/div
+[Test_Analytics.js]: 2019-12-11 21:23:59 - info: 2: sales 65
+[Test_Analytics.js]: 2019-12-11 21:23:59 - info: Validation SECCEEDED: The number of sales on top employee of 2 increased by 1
+
+[Test_Actions.js]: 2019-12-11 23:04:42 - info: Test: Going to add a new client on Actions page, check if pop-up indicates success and validate that the client was actually added
+[Test_Actions.js]: 2019-12-11 23:05:05 - info: UPDATE SUCCESSFUL
+[Test_Actions.js]: 2019-12-11 23:05:10 - info: The client Josh Burger was updated SUCCESSFULY. The Josh Burger is: Josh Burger

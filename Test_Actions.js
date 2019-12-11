@@ -14,10 +14,10 @@ class TestActions {
 
     //Add a new client, check the pop up is successful and validate client exists 
     async addNewClientAndValidate(firstName, lastName, country, owner, email, searchBy, input, type) {
-        console.log("Test: Going to add a new client, check if pop-up indicates success and validate that the client was actually added")
-        logger.info(`Test: Going to add a new client, check if pop-up indicates success and validate that the client was actually added`)
+        console.log("Test: Going to add a new client on Actions page, check if pop-up indicates success and validate that the client was actually added")
+        logger.info(`Test: Going to add a new client on Actions page, check if pop-up indicates success and validate that the client was actually added`)
         await this.homePage.navigateToHomePage()
-        await this.homePage.clickOnActions()
+        await this.homePage.clickOnPage('actions')
         await this.actionsPage.addNewClient(firstName, lastName, country, owner, email)
         await this.clientsPage.navigateToClientsPage()
         let name = await this.clientsPage.searchByAndValidate(searchBy, input, type)
@@ -33,10 +33,10 @@ class TestActions {
 
     // Add new client and validate the pop up is accordingly to the operation (successfull or missing data)
     async addNewClient(firstName = null, lastName = null, country = null, owner = null, email = null) {
-        console.log("Test: Going to add a new client and validate the pop up accordingly to the operation")
-        logger.info("Test: Going to add a new client and validate the pop up accordingly to the operation")
+        console.log("Test: Going to add a new client on Action page and validate the pop up accordingly to the operation")
+        logger.info("Test: Going to add a new client on Action page and validate the pop up accordingly to the operation")
         await this.homePage.navigateToHomePage()
-        await this.homePage.clickOnActions()
+        await this.homePage.clickOnPage('actions')
         await this.actionsPage.addNewClient(firstName, lastName, country, owner, email)
     }
 
@@ -45,7 +45,7 @@ class TestActions {
         console.log("Test: Going to update a new owner, or email type, or declare as 'Sold' and validate the update was made")
         logger.info("Test: Going to update a new owner, or email type, or declare as 'Sold' and validate the update was made")
         await this.homePage.navigateToHomePage()
-        await this.homePage.clickOnClients()
+        await this.homePage.clickOnPage('CLIENTS')
         let typeBefore = await this.clientsPage.searchByAndValidate(searchBy, input, type)
         await this.actionsPage.navigateToActionsPage()
         await this.actionsPage.updateClient(client, newOwner, changeEmailType, sold)

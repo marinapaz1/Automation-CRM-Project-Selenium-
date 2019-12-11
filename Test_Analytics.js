@@ -18,7 +18,7 @@ class TestAnalytics {
         console.log(`Check for number of sales of the employee ${employeeName} in ${countrySales}, change the sales number by adding a client in ${countrySales}\nfor ${employeeName} and update it to declare as sold, then validate the number of sales increased by 1`)
         logger.info(`Check for number of sales of the employee ${employeeName} in ${countrySales}, change the sales number by adding a client in ${countrySales}\nfor ${employeeName} and update it to declare as sold, then validate the number of sales increased by 1`)
         await this.homePage.navigateToHomePage()
-        await this.homePage.clickOnAnalytics()
+        await this.homePage.clickOnPage('analytics')
         let salesBefore = await this.analyticsPage.validateEmployeeSales(countrySales, employeeName)
         await this.actionsPage.navigateToActionsPage()
         await this.actionsPage.addNewClient(firstName, lastName, country, owner, email)
@@ -39,7 +39,7 @@ class TestAnalytics {
         console.log(`Check for number of Email Sent, delete a client that has an email type, and validate the number of Email Sent decreased by 1`)
         logger.info(`Check for number of Email Sent, delete a client that has an email type, and validate the number of Email Sent decreased by 1`)
         await this.homePage.navigateToHomePage()
-        await this.homePage.clickOnAnalytics()
+        await this.homePage.clickOnPage('analytics')
         let emailsSentBefore = await this.analyticsPage.validateEmailsSent()
         await this.clientsPage.navigateToClientsPage()
         await this.clientsPage.searchByAndValidate(searchBy, input, type)
@@ -62,7 +62,7 @@ class TestAnalytics {
         logger.info(`Check for number of sales on Top Employee, add a client to that employee, update that client and declare as 'Sold',
         and validate the number of sales increased by 1`)
         await this.homePage.navigateToHomePage()
-        await this.homePage.clickOnAnalytics()
+        await this.homePage.clickOnPage('analytics')
         let salesBefore = await this.analyticsPage.validateTopEmployee(topEmployee)
         await this.actionsPage.navigateToActionsPage()
         await this.actionsPage.addNewClient(firstName, lastName, country, owner, email)
@@ -86,21 +86,24 @@ async function test() {
     //1 //validate number of employees sales in Greece, update Janice Alvarado's client's 'Sold' to YES, and validate number changed
     await testAnalytics.employeeSales('Greece', 'Janice', 'Jasmin', 'BurgerKing', 'Greece', 'Janice Alvarado', 'Jasmin@TheGreat.com', 'Jasmin BurgerKing', null, null, 'sold')
 
-
     //2 //validate number of Email Sent, delete a client that has an email type and validate the number of Email Sent changed
     await testAnalytics.emailsSent("Email Type", "B", "Email Type", "delete")
 
     /*3 //check for number of sales on Top Employee, add a client to that employee, update client and declare as 'Sold',
         and validate the number of sales */
-    let topEmployee = ["Janice Alvarado", "Martin Massey", "Emily Durham"]
+    let topEmployee = {
+        JaniceAlvarado: 1,
+        MartinMassey: 2,
+        EmilyDurham: 3
+    }
     // //Check Janice
-    await testAnalytics.topEmployee(topEmployee[0], 'David', 'King', 'Croatia', 'Janice Alvarado', 'David@TheMighty.com', 'David King', null, null, 'sold')
-
-    // //Check Barton
-    await testAnalytics.topEmployee(topEmployee[1], 'Nancy', 'Lewise', 'Croatia', 'Martin Massey', 'NancyL@TheMighty.com', 'Nancy Lewise', null, null, 'sold')
+    await testAnalytics.topEmployee(topEmployee.JaniceAlvarado, 'David', 'King', 'Croatia', 'Janice Alvarado', 'David@TheMighty.com', 'David King', null, null, 'sold')
 
     // //Check Martin
-    await testAnalytics.topEmployee(topEmployee[2], 'Marika', 'Jonhanson', 'Croatia', 'Emily Durham', 'MarikaJ@TheMighty.com', 'Marika Jonhanson', null, null, 'sold')
+    await testAnalytics.topEmployee(topEmployee.MartinMassey, 'Burla', 'Lewise', 'Croatia', 'Martin Massey', 'BurlaL@TheMighty.com', 'Burla Lewise', null, null, 'sold')
+
+    // //Check Emily
+    await testAnalytics.topEmployee(topEmployee.EmilyDurham, 'Marika', 'Jonhanson', 'Croatia', 'Emily Durham', 'MarikaJ@TheMighty.com', 'Marika Jonhanson', null, null, 'sold')
     await testAnalytics.homePage.close()
 }
 test()

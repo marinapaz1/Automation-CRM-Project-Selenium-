@@ -15,7 +15,7 @@ class TestClients {
         console.log('Test: Going to search a client and validate that the result matches the searched data')
         logger.info('Test: Going to search a client and validate that the result matches the searched data')
         await this.homePage.navigateToHomePage()
-        await this.homePage.clickOnClients()
+        await this.homePage.clickOnPage('clients')
         await this.clientsPage.searchByAndValidate(searchBy, input, type)
     }
 
@@ -24,7 +24,7 @@ class TestClients {
         console.log('Test: Going to update a client and validate it actually was updated successfuly')
         logger.info('Test: Going to update a client and validate it actually was updated successfuly')
         await this.homePage.navigateToHomePage()
-        await this.homePage.clickOnClients()
+        await this.homePage.clickOnPage('clients')
         let typeBefore = await this.clientsPage.searchByAndValidate(searchBy, input, type)
         await this.clientsPage.deleteOrUpdateClient(deleteClient, updateClient, country, email)
         let typeAfter = await this.clientsPage.searchByAndValidate(searchBy, input, type)
@@ -42,7 +42,7 @@ class TestClients {
         console.log('Test: Going to delete a client and validate it actually was deleted successfuly')
         logger.info('Test: Going to delete a client and validate it actually was deleted successfuly')
         await this.homePage.navigateToHomePage()
-        await this.homePage.clickOnClients()
+        await this.homePage.clickOnPage('clients')
         await this.clientsPage.searchByAndValidate(searchBy, input, type)
         await this.clientsPage.deleteOrUpdateClient(deleteClient, updateClient, country, email)
     }
